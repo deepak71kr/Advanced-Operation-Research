@@ -2,81 +2,109 @@
 #include <cmath>
 using namespace std;
 
+// ---------------- Question 1 ----------------
+double eoq1(double D, double S, double H, double &totalCost)
+{
+    double eoq = sqrt((2 * D * S) / H);
+    totalCost = (D / eoq) * S + (eoq / 2) * H;
+    return eoq;
+}
+
+// ---------------- Question 2 ----------------
+double eoq2(double D, double S, double price, double rate,
+            double &orderCost, double &holdCost)
+{
+    double H = price * rate;
+    double eoq = sqrt((2 * D * S) / H);
+
+    orderCost = (D / eoq) * S;
+    holdCost  = (eoq / 2) * H;
+
+    return eoq;
+}
+    
+// ---------------- Question 3 ----------------
+double eoq3(double D, double S, double H,
+            double &cycleTime, double &totalCost)
+{
+    double eoq = sqrt((2 * D * S) / H);
+    cycleTime = eoq / D;
+    totalCost = (D / eoq) * S + (eoq / 2) * H;
+    return eoq;
+}
+
+// ---------------- Question 4 ----------------
+double eoq4(double D, double S, double H,
+            double &orders, double &minCost)
+{
+    double eoq = sqrt((2 * D * S) / H);
+    orders  = D / eoq;
+    minCost = (D / eoq) * S + (eoq / 2) * H;
+    return eoq;
+}
+
 int main()
 {
-    cout << "INVENTORY MANAGEMENT USING EOQ MODEL\n\n";
+    cout << "EOQ MODEL (CLEAN VARIABLE NAMES)\n\n";
 
-    //q1
-    {
-        double D = 12000;   
-        double S = 500;     
-        double H = 20;     
+    // ========== QUESTION 1 ==========
+    double D = 12000;   // demand
+    double S = 500;     // ordering cost
+    double H = 20;      // holding cost
+    double totalCost;
 
-        double EOQ = sqrt((2 * D * S) / H);
-        double orders = D / EOQ;
-        double totalCost = (D / EOQ) * S + (EOQ / 2) * H;
+    double EOQ = eoq1(D, S, H, totalCost);
 
-        cout << "QUESTION 1\n";
-        cout << "EOQ = " << EOQ << endl;
-        cout << "Number of orders per year = " << orders << endl;
-        cout << "Total annual inventory cost = Rs " << totalCost << "\n\n";
-    }
+    cout << "QUESTION 1\n";
+    cout << "EOQ = " << EOQ << endl;
+    cout << "Orders per year = " << D / EOQ << endl;
+    cout << "Total cost = Rs " << totalCost << "\n\n";
 
-    // q2
-    {
-        double D = 8000;
-        double S = 400;
-        double unitPrice = 80;
-        double carryingRate = 0.25;
+    // ========== QUESTION 2 ==========
+    D = 8000;
+    S = 400;
+    double price = 80;
+    double rate  = 0.25;
+    double orderCost, holdCost;
 
-        double H = carryingRate * unitPrice;
-        double EOQ = sqrt((2 * D * S) / H);
-        double orderingCost = (D / EOQ) * S;
-        double holdingCost = (EOQ / 2) * H;
+    EOQ = eoq2(D, S, price, rate, orderCost, holdCost);
 
-        cout << "QUESTION 2\n";
-        cout << "Holding cost per unit per year = Rs " << H << endl;
-        cout << "EOQ = " << EOQ << endl;
-        cout << "Annual ordering cost = Rs " << orderingCost << endl;
-        cout << "Annual holding cost = Rs " << holdingCost << endl;
+    cout << "QUESTION 2\n";
+    cout << "Holding cost per unit = Rs " << price * rate << endl;
+    cout << "EOQ = " << EOQ << endl;
+    cout << "Ordering cost = Rs " << orderCost << endl;
+    cout << "Holding cost = Rs " << holdCost << endl;
 
-        if (abs(orderingCost - holdingCost) < 1)
-            cout << "Optimality condition verified\n\n";
-        else
-            cout << "Optimality condition not verified\n\n";
-    }
+    if (abs(orderCost - holdCost) < 1)
+        cout << "Optimality condition verified\n\n";
+    else
+        cout << "Optimality condition not verified\n\n";
 
-    // q3
-    {
-        double D = 15000;
-        double S = 600;
-        double H = 15;
+    // ========== QUESTION 3 ==========
+    D = 15000;
+    S = 600;
+    H = 15;
+    double cycleTime;
 
-        double EOQ = sqrt((2 * D * S) / H);
-        double cycleTime = EOQ / D;
-        double totalCost = (D / EOQ) * S + (EOQ / 2) * H;
+    EOQ = eoq3(D, S, H, cycleTime, totalCost);
 
-        cout << "QUESTION 3\n";
-        cout << "EOQ = " << EOQ << endl;
-        cout << "Optimal cycle time (years) = " << cycleTime << endl;
-        cout << "Total annual inventory cost = Rs " << totalCost << "\n\n";
-    }
+    cout << "QUESTION 3\n";
+    cout << "EOQ = " << EOQ << endl;
+    cout << "Cycle time = " << cycleTime << " years\n";
+    cout << "Total cost = Rs " << totalCost << "\n\n";
 
-    // q4
-    {
-        double D = 10000;
-        double S = 300;
-        double H = 12;
+    // ========== QUESTION 4 ==========
+    D = 10000;
+    S = 300;
+    H = 12;
+    double orders, minCost;
 
-        double EOQ = sqrt((2 * D * S) / H);
-        double orders = D / EOQ;
-        double minCost = (D / EOQ) * S + (EOQ / 2) * H;
+    EOQ = eoq4(D, S, H, orders, minCost);
 
-        cout << "QUESTION 4\n";
-        cout << "EOQ = " << EOQ << endl;
-        cout << "Number of orders per year = " << orders << endl;
-        cout << "Minimum total inventory cost = Rs " << minCost << endl;
-    }
+    cout << "QUESTION 4\n";
+    cout << "EOQ = " << EOQ << endl;
+    cout << "Orders per year = " << orders << endl;
+    cout << "Minimum cost = Rs " << minCost << endl;
 
     return 0;
 }
